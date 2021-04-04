@@ -1,18 +1,39 @@
+(define empty? (lambda (x) (eq? x '())))
+
+
 (define append 
   (lambda(lst1 lst2)
-      @TODO
+      (if (empty? lst1)
+        lst2
+        (cons (car lst1) (append (cdr lst1) lst2))
+      )
   )
 )
 
-(define reverse 
+(define reverse
   (lambda (lst)
-        @TODO
+      (if (empty? lst)
+        '()
+        (append (reverse (cdr lst)) (cons (car lst) '()))) 
+      )
+)
+
+(define duplicate-val
+  (lambda(lst val dup-num)
+    (if(= dup-num 0)
+      lst
+      (append duplicate-val (cons val '()))
+    )  
   )
 )
 
 (define duplicate-items
    (lambda(lst dup-count)
-      @TODO
+      (if (empty? dup-count)
+
+
+
+      )
    )
 )
 
