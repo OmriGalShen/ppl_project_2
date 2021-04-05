@@ -19,21 +19,29 @@
 )
 
 (define duplicate-val
-  (lambda(lst val dup-num)
-    (if(= dup-num 0)
-      lst
-      (append duplicate-val (cons val '()))
-    )  
-  )
+   (lambda(lst dup-count val)
+        (if (= dup-count 0)
+        lst
+        (duplicate-val(append lst (list val))(- dup-count 1) val)
+      )
+   )
+)
+
+(define duplicate-items-helper
+   (lambda(og-lst new-lst og-dup curr-dup)
+      (if (empty? og-lst)
+        new-lst
+        (if (empty? curr-dup)
+            (duplicate-items-helper (cdr og-lst) (duplicate-val new-lst (car og-dup) (car og-lst)) og-dup (cdr og-dup))
+            (duplicate-items-helper (cdr og-lst) (duplicate-val new-lst (car curr-dup) (car og-lst)) og-dup (cdr curr-dup))
+        )
+      )
+   )
 )
 
 (define duplicate-items
    (lambda(lst dup-count)
-      (if (empty? dup-count)
-
-
-
-      )
+     (duplicate-items-helper lst '() dup-count dup-count)
    )
 )
 
