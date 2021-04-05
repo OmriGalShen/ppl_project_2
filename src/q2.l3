@@ -78,9 +78,21 @@
       )
 )
 
-                               
-(define compose-n
-  (lambda( f n)
-        @TODO
+(define compose-n-helper
+  (lambda (f n x)
+    (if (= n 1)
+       (f x)
+       (f (compose-n-helper f (- n 1) x))
+    )
   )
 )
+
+(define compose-n
+  (lambda( f n)
+    (lambda (x)
+     (compose-n-helper f n x)
+    )
+  )
+)
+
+
