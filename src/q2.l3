@@ -46,11 +46,38 @@
 )
 
 
-(define payment
-  (lambda (n coins-lst)
-        @TODO
+(define remove-dup-rec
+  (lambda (lst new-lst val)
+      (if (empty? lst)
+         new-lst
+         (if (eq? (car lst) val)
+            (remove-dup-rec (cdr lst) new-lst val)
+            (remove-dup-rec (cdr lst) (append new-lst (list (car lst))) val)
+         )
+      )
   )
 )
+
+(define remove-dup
+  (lambda (lst val)
+    (remove-dup-rec lst '() val)
+  )
+)
+
+(define payment
+  (lambda (n coins-lst)
+      (if(= n 0)
+        1
+        (if (or (empty? coins-lst) (< n 0))
+           0
+           (if (empty? (cdr coins-lst))            
+           (+ (payment (- n (car coins-lst)) (cdr coins-lst)) (payment n (cdr coins-lst)))
+           (+ (payment (- n (car coins-lst)) (cdr coins-lst)) (payment n  (remove-dup coins-lst (car coins-lst))))
+           ))
+        )
+      )
+)
+
                                
 (define compose-n
   (lambda( f n)
