@@ -243,11 +243,9 @@ const parseLetExp = (bindings: Sexp, body: Sexp[]): Result<LetExp> => {
         (bindingsResult, mapResult(parseL31CExp, body));
 }
 
-// TODO: L31 - Assignment 2
+// L31 - Assignment 2
 const parseClassExp = (fields: Sexp, bindings: Sexp[]): Result<ClassExp> => {
     const methods = bindings[0];
-    console.log("methods:\n ",methods,"\n");
-    console.log("fields\n",fields,"\n");
     if (!isGoodBindings(methods)) {
         return makeFailure('Malformed methods in "class" expression');
     }
@@ -255,13 +253,9 @@ const parseClassExp = (fields: Sexp, bindings: Sexp[]): Result<ClassExp> => {
         return makeFailure('Malformed fields in "class" expression');
     }
     const method_names = map(b => b[0], methods);
-    console.log("method_names\n",method_names,"\n");
     const methodsResult = mapResult(methods => parseL31CExp(second(methods)), methods);
-    console.log("methodsResult",":\n",methodsResult,"\n");
     const bindingsResult = bind(methodsResult, (vals: CExp[]) => makeOk(zipWith(makeBinding, method_names, vals)));
-    console.log("bindingsResult",":\n",bindingsResult,"\n");
     const fieldsResult:Result<VarDecl[]> = mapResult(fields => makeOk(makeVarDecl(fields) ),fields);
-    console.log("fieldsResult",":\n",fieldsResult,"\n");
     return safe2((fields: VarDecl[], methods: Binding[]) => makeOk(makeClassExp(fields, methods)))
         (fieldsResult, bindingsResult);
 }
