@@ -244,15 +244,21 @@ const parseLetExp = (bindings: Sexp, body: Sexp[]): Result<LetExp> => {
 }
 
 // TODO: L31 - Assignment
-const parseClassExp = (bindings: Sexp, body: Sexp[]): Result<LetExp> => {
-    if (!isGoodBindings(bindings)) {
-        return makeFailure('Malformed bindings in "let" expression');
+const parseClassExp = (fields: Sexp, bindings: Sexp[]): Result<ClassExp> => {
+    const methods = bindings[0];
+    if (!isGoodBindings(methods)) {
+        return makeFailure('Malformed methods in "class" expression');
     }
-    const vars = map(b => b[0], bindings);
-    const valsResult = mapResult(binding => parseL31CExp(second(binding)), bindings);
+    if (!isArray(fields) || !allT(isString, fields)) {
+        return makeFailure('Malformed fields in "class" expression');
+    }
+    const vars = map(b => b[0], methods);
+    const valsResult = mapResult(methods => parseL31CExp(second(methods)), methods);
     const bindingsResult = bind(valsResult, (vals: CExp[]) => makeOk(zipWith(makeBinding, vars, vals)));
-    return safe2((bindings: Binding[], body: CExp[]) => makeOk(makeLetExp(bindings, body)))
-        (bindingsResult, mapResult(parseL31CExp, body));
+    const fieldsResult:Result<VarDecl[]> = mapResult(fields => makeOk(makeVarDecl(fields) ),fields);
+    return safe2((fields: VarDecl[], methods: Binding[]) => makeOk(makeClassExp(fields, methods)))
+        (fieldsResult, bindingsResult);
+    // return makeOk(makeClassExp(map(makeVarDecl, fields),);
 }
 
 // sexps has the shape (quote <sexp>)
@@ -306,9 +312,8 @@ const unparseProcExp = (pe: ProcExp): string =>
 const unparseLetExp = (le: LetExp) : string => 
     `(let (${map((b: Binding) => `(${b.var.var} ${unparseL31(b.val)})`, le.bindings).join(" ")}) ${unparseLExps(le.body)})`
 
-// TODO: L31 - Assignment 2 
 const unparseClassExp = (ce: ClassExp) : string => 
-    `(let (${map((b: Binding) => `(${b.var.var} ${unparseL31(b.val)})`, ce.methods).join(" ")}) ${unparseLExps()})`
+    `(class (${map((p: VarDecl) => p.var, ce.fields).join(" ")}) (${map((b: Binding) => `(${b.var.var} ${unparseL31(b.val)})`, ce.methods).join(" ")}))`
 
 export const unparseL31 = (exp: Program | Exp): string =>
     isClassExp(exp)? unparseClassExp(exp) :
