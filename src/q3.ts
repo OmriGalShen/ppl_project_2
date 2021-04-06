@@ -27,6 +27,7 @@ import {
   isClassExp,
   isLetExp,
   makeBinding,
+  makeNumExp,
 } from "./L31-ast";
 import { Result, makeFailure, makeOk } from "../shared/result";
 import * as R from "ramda";
@@ -40,6 +41,7 @@ export const class2proc = (exp: ClassExp): ProcExp =>
   makeProcExp(exp.fields, [
     makeProcExp([makeVarDecl("msg")], [makeBody(exp.methods)]),
   ]);
+
 
 const makeBody = (binding: Binding[]): CExp => {
   if (binding.length === 0) return makeBoolExp(false);
@@ -81,7 +83,7 @@ const rewriteAllClassCExp = (exp: CExp): CExp =>
     ? makeIfExp(
         rewriteAllClassCExp(exp.test),
         rewriteAllClassCExp(exp.then),
-        rewriteAllClassCExp(exp.then)
+        rewriteAllClassCExp(exp.alt)
       )
     : isAppExp(exp)
     ? makeAppExp(
