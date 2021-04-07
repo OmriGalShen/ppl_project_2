@@ -73,7 +73,7 @@ const unparseToPython = (exp: Program | Exp): string =>
     : isDefineExp(exp)
     ? unparseDefineExp(exp)
     : isProgram(exp)
-    ? `(L31 ${unparseLExps(exp.exps)})`
+    ? unparseLExps(exp.exps)
     : exp;
 
 // const unparseAppExp = (app: AppExp): string =>
@@ -89,12 +89,19 @@ const unparseProcExp = (pe: ProcExp): string =>
 
 const unparseAppExp = (app: AppExp): string =>
   isPrimOp(app.rator)
-    ? `(${app.rands
-        .map((val) => unparseToPython(val))
-        .join(" " + unparseToPython(app.rator) + " ")})`
+    ? app.rator.op === "not"
+      ? `(not ${map(unparseToPython, app.rands).join(" ")})`
+      : `(${map(unparseToPython, app.rands).join(
+          " " + unparseToPython(app.rator) + " "
+        )})`
     : `${unparseToPython(app.rator)}(${app.rands
         .map((val) => unparseToPython(val))
         .join(",")})`;
+
+// const unparseAppExp = (app: AppExp): string =>
+//   `${unparseToPython(app.rator)}(${app.rands
+//     .map((val) => unparseToPython(val))
+//     .join(",")})`;
 
 const unparseIfExp = (ifex: IfExp): string =>
   `(${unparseToPython(ifex.then)} if ${unparseToPython(
@@ -115,6 +122,21 @@ const unparsePrimeOp = (op: string): string =>
     ? "is"
     : op;
 
+// const unparsePrimeOp = (op: string): string => {
+//   if (op === "not") console.log("banana!!!!!");
+//   return op === "="
+//     ? "=="
+//     : op === "boolean?"
+//     ? "(lambda x : (type(x) == bool)"
+//     : op === "number?"
+//     ? "(lambda x : (type(x) == number)"
+//     : op === "eq?"
+//     ? "is"
+//     : op === "not"
+//     ? "banana"
+//     : op;
+// };
+
 const valueToString = (val: Value): string =>
   isNumber(val)
     ? val.toString()
@@ -131,7 +153,7 @@ const valueToString = (val: Value): string =>
     : isSymbolSExp(val)
     ? val.val
     : isEmptySExp(val)
-    ? "''"
+    ? "[]"
     : isCompoundSExp(val)
     ? compoundSExpToString(val)
     : val;
