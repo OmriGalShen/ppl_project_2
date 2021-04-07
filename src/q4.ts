@@ -1,7 +1,5 @@
 import {
-  Closure,
   closureToString,
-  CompoundSExp,
   compoundSExpToString,
   isClosure,
   isCompoundSExp,
@@ -13,11 +11,6 @@ import {
   Exp,
   Program,
   DefineExp,
-  NumExp,
-  BoolExp,
-  StrExp,
-  PrimOp,
-  VarRef,
   VarDecl,
   AppExp,
   IfExp,
@@ -76,9 +69,6 @@ const unparseToPython = (exp: Program | Exp): string =>
     ? unparseLExps(exp.exps)
     : exp;
 
-// const unparseAppExp = (app: AppExp): string =>
-// `(${unparseToPython(app.rator)} ${unparseLExps(app.rands)})`
-
 const unparseLExps = (les: Exp[]): string =>
   map(unparseToPython, les).join(" ");
 
@@ -98,11 +88,6 @@ const unparseAppExp = (app: AppExp): string =>
         .map((val) => unparseToPython(val))
         .join(",")})`;
 
-// const unparseAppExp = (app: AppExp): string =>
-//   `${unparseToPython(app.rator)}(${app.rands
-//     .map((val) => unparseToPython(val))
-//     .join(",")})`;
-
 const unparseIfExp = (ifex: IfExp): string =>
   `(${unparseToPython(ifex.then)} if ${unparseToPython(
     ifex.test
@@ -121,21 +106,6 @@ const unparsePrimeOp = (op: string): string =>
     : op === "eq?"
     ? "is"
     : op;
-
-// const unparsePrimeOp = (op: string): string => {
-//   if (op === "not") console.log("banana!!!!!");
-//   return op === "="
-//     ? "=="
-//     : op === "boolean?"
-//     ? "(lambda x : (type(x) == bool)"
-//     : op === "number?"
-//     ? "(lambda x : (type(x) == number)"
-//     : op === "eq?"
-//     ? "is"
-//     : op === "not"
-//     ? "banana"
-//     : op;
-// };
 
 const valueToString = (val: Value): string =>
   isNumber(val)
