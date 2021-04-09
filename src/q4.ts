@@ -104,7 +104,7 @@ const unparsePrimeOp = (op: string): string =>
     : op === "number?"
     ? "(lambda x : (type(x) == number)"
     : op === "eq?"
-    ? "is"
+    ? "=="
     : op;
 
 const valueToString = (val: Value): string =>
