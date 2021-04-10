@@ -70,7 +70,7 @@ const unparseToPython = (exp: Program | Exp): string =>
     : exp;
 
 const unparseLExps = (les: Exp[]): string =>
-  map(unparseToPython, les).join(" ");
+  map(unparseToPython, les).join("\n");
 
 const unparseProcExp = (pe: ProcExp): string =>
   `(lambda ${map((p: VarDecl) => p.var, pe.args).join(",")} : ${unparseLExps(
