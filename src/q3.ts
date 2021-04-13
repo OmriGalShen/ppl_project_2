@@ -28,9 +28,11 @@ import {
   isLetExp,
   makeBinding,
   makeNumExp,
+  makeLitExp,
 } from "./L31-ast";
 import { Result, makeFailure, makeOk } from "../shared/result";
 import * as R from "ramda";
+import { makeSymbolSExp } from "../imp/L3-value";
 
 /*
 Purpose: Transform ClassExp to ProcExp
@@ -45,9 +47,9 @@ export const class2proc = (exp: ClassExp): ProcExp =>
 
 const makeBody = (binding: Binding[]): CExp => {
   if (binding.length === 0) return makeBoolExp(false);
-  const var_name = "'" + binding[0].var.var;
+  const var_name = binding[0].var.var;
   return makeIfExp(
-    makeAppExp(makePrimOp("eq?"), [makeVarRef("msg"), makeVarRef(var_name)]),
+    makeAppExp(makePrimOp("eq?"), [makeVarRef("msg"), makeLitExp(makeSymbolSExp(var_name))]),
     makeAppExp(binding[0].val, []),
     makeBody(R.tail(binding))
   );
