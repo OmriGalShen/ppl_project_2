@@ -15,9 +15,6 @@ import {
   AppExp,
   IfExp,
   ProcExp,
-} from "../imp/L3-ast";
-import { Result, makeFailure, makeOk } from "../shared/result";
-import {
   isBoolExp,
   isNumExp,
   isStrExp,
@@ -30,9 +27,10 @@ import {
   isProgram,
   isLitExp,
   isLetExp,
-} from "./L31-ast";
-import { append, map, zipWith } from "ramda";
-import { isNumber, isArray, isString } from "../shared/type-predicates";
+} from "../imp/L3-ast";
+import { Result, makeFailure, makeOk } from "../shared/result";
+import { map} from "ramda";
+import { isNumber, isString } from "../shared/type-predicates";
 
 /*
 Purpose: Transform L2 AST to Python program string
