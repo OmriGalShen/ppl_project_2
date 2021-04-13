@@ -100,7 +100,7 @@ const unparsePrimeOp = (op: string): string =>
     : op === "boolean?"
     ? "(lambda x : (type(x) == bool)"
     : op === "number?"
-    ? "(lambda x : (type(x) == number)"
+    ? "(lambda x: (type(x)== int or type(x)==float)"
     : op === "eq?"
     ? "=="
     : op;
