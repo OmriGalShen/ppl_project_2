@@ -9,5 +9,5 @@ run 'npm i' in terminal
 ### How to test:
 run 'npm test' in terminal
 
-A visual illustration of learning typescript:  
-![alt text](https://media.giphy.com/media/cODrlNTkGnZGVtVagd/giphy.gif)  
+A visual illustration of trying to understand what I just wrote in Scheme:  
+![alt text](https://media.giphy.com/media/ji6zzUZwNIuLS/giphy.gif)  
