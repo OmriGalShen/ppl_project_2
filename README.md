@@ -10,4 +10,4 @@ run 'npm i' in terminal
 run 'npm test' in terminal
 
 A visual illustration of trying to understand what I just wrote in Scheme:  
-![alt text](https://media.giphy.com/media/ji6zzUZwNIuLS/giphy.gif)  
+![alt text](https://media.giphy.com/media/118p3q768COZhu/giphy.gif)  
